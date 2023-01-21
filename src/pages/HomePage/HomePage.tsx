@@ -1,5 +1,4 @@
 import {Box, Container, Divider, Grid, Typography} from "@mui/material";
-import SearchBar from "./components/SearchBar";
 import Header from "./components/Header";
 import ArticleSkeleton from "./components/ArticleSkeleton";
 
