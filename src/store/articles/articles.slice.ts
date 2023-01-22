@@ -14,7 +14,7 @@ export const articlesSlice = createSlice({
     reducers: {
 
     },
-    extraReducers: {
+    extraReducers: (builder) => {
 
     }
 })
