@@ -1,3 +1,3 @@
 export const environment = {
-    baseApiUrl: "https://spaceflightnewsapi.net/"
+    baseApiUrl: "https://api.spaceflightnewsapi.net/v3/"
 }

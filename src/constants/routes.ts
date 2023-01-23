@@ -2,7 +2,7 @@
 
 export const ROUTES = {
     HOME: "/articles",
-    ARTICLE: (id?: string) => id ? `/articles/${id}` : "/articles/:id",
+    ARTICLE: (id?: string | number) => id ? `/articles/${id}` : "/articles/:id",
     NON_MATCHING: "/*"
 } as const;
 

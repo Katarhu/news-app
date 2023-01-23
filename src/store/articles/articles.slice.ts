@@ -1,5 +1,6 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {IArticleState} from "../../models/article";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {IArticle, IArticleState} from "../../models/article";
+import {getArticles} from "./articles.action.creators";
 
 
 const initialState: IArticleState = {
@@ -14,8 +15,19 @@ export const articlesSlice = createSlice({
     reducers: {
 
     },
-    extraReducers: {
-
+    extraReducers: (builder) => {
+        builder
+            .addCase(getArticles.pending.type, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getArticles.fulfilled.type, (state, action: PayloadAction<IArticle[]>) => {
+                state.isLoading = false;
+                state.articles = action.payload;
+            })
+            .addCase(getArticles.rejected.type, (state, action: PayloadAction<string>) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
     }
 })
 
