@@ -1,19 +1,22 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IArticle, IArticleState} from "../../models/article";
 import {getArticles} from "./articles.action.creators";
+import {environment} from "../../environment";
+
 
 
 const initialState: IArticleState = {
     articles: [],
     isLoading: false,
     error: null,
+    start: 0,
 }
 
 export const articlesSlice = createSlice({
     name: "articles",
     initialState,
     reducers: {
-
+        increaseLimit: (state) => { state.start += environment.ARTICLES_PER_FETCH }
     },
     extraReducers: (builder) => {
         builder
@@ -22,7 +25,7 @@ export const articlesSlice = createSlice({
             })
             .addCase(getArticles.fulfilled.type, (state, action: PayloadAction<IArticle[]>) => {
                 state.isLoading = false;
-                state.articles = action.payload;
+                state.articles = [...state.articles, ...action.payload];
             })
             .addCase(getArticles.rejected.type, (state, action: PayloadAction<string>) => {
                 state.isLoading = false;
@@ -33,3 +36,4 @@ export const articlesSlice = createSlice({
 
 
 export default articlesSlice.reducer;
+export const { increaseLimit } = articlesSlice.actions;

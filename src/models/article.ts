@@ -11,4 +11,5 @@ export interface IArticleState {
     articles: IArticle[];
     error: string | null;
     isLoading: boolean;
+    start: number;
 }

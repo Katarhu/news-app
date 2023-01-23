@@ -6,6 +6,10 @@ import Article from "./components/Article";
 import {useAppSelector} from "../../hooks/redux";
 import {selectArticles, selectIsArticlesLoading} from "../../store/articles/articles.selector";
 import {IArticle} from "../../models/article";
+import IntersectionBox from "./components/IntersectorBox";
+import {environment} from "../../environment";
+import {useMemo} from "react";
+import ScrollBack from "./components/ScrollBack";
 
 
 function HomePage() {
@@ -15,24 +19,22 @@ function HomePage() {
 
     const getLoadingSkeletons = (isLoading: boolean) => {
         if( !isLoading ) return;
-        return new Array(6).fill("").map(() =>
-            <ArticleSkeleton />
+        return new Array(environment.ARTICLES_PER_FETCH).fill("").map((_, index) =>
+            <ArticleSkeleton key={index} />
         )
     }
 
     const getArticleItems = (articles: IArticle[]) => {
         if( isArticlesLoading ) return;
-        if( !articles.length ) return <Typography fontSize={20} sx={{ p: 4 }}>There is no articles yet</Typography>
+        if( !articles.length ) return;
 
         return articles.map((article) =>
-            // <Grid item container xs={12} md={6} lg={4} justifyContent="center">
-                <Article {...article} />
-            // </Grid>
+            <Article key={article.id + new Date().getTime() * Math.random() * 1000} {...article} />
         )
     }
 
     const skeletonsWhileLoading = getLoadingSkeletons(isArticlesLoading);
-    const articleItems = getArticleItems(articles);
+    const articleItems = useMemo(() => getArticleItems(articles), [articles]);
     const articlesLength = articles.length;
 
     return (
@@ -54,6 +56,7 @@ function HomePage() {
 
                 <Divider />
 
+            <ScrollBack />
                 <Box
                     sx={{
                         display: "grid",
@@ -67,6 +70,10 @@ function HomePage() {
                     {skeletonsWhileLoading}
                 </Box>
             </Box>
+
+
+            <IntersectionBox />
+
         </Container>
     );
 }

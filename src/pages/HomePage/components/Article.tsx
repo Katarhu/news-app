@@ -4,6 +4,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import {IArticle} from "../../../models/article";
 import {Link} from "react-router-dom";
 import ROUTES from "../../../constants/routes";
+import formatDate from "../../../utils/formatDate";
 
 const MAX_TEXT_LENGTH = 100;
 
@@ -16,6 +17,7 @@ function Article({ id, title, imageUrl, summary, publishedAt, updatedAt }: IArti
 
     const slicedTitle = sliceStringTo(title, MAX_TEXT_LENGTH);
     const slicedSummary = sliceStringTo(summary, MAX_TEXT_LENGTH);
+    const formattedDate = formatDate(publishedAt);
 
     return (
         <Card sx={{
@@ -40,7 +42,7 @@ function Article({ id, title, imageUrl, summary, publishedAt, updatedAt }: IArti
                     color="primary"
                     sx={{ fontWeight: 400, fontSize: 14, opacity: 0.8, display: "flex", alignItems: "center", gap: ".5em", mb: 1}}
                 >
-                    <CalendarTodayIcon fontSize="inherit"/> {publishedAt}
+                    <CalendarTodayIcon fontSize="inherit"/> {formattedDate}
                 </Typography>
 
                 <Typography

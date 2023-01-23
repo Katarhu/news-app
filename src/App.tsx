@@ -8,7 +8,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   useOnMount(() => {
-    dispatch(getArticles());
+    dispatch(getArticles(0));
   });
 
   return <Outlet />;
