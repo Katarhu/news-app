@@ -1,24 +1,20 @@
 import {Box, Button, Container, Paper, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import ROUTES from "../../constants/routes";
+import {useAppSelector} from "../../hooks/redux";
+import {selectArticleById} from "../../store/articles/articles.selector";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 function ArticlePage() {
 
     const navigate = useNavigate();
 
-    const article = {
-        "id": 17967,
-        "title": "SpaceX’s latest Falcon Heavy launch captured from a rare perspective",
-        "url": "https://www.teslarati.com/spacex-falcon-heavy-launch-space-station-view/",
-        "imageUrl": "https://www.teslarati.com/wp-content/uploads/2023/01/USSF-67-FH-B1064-B1065-B1070-39A-011523-Richard-Angle-NASA-ISS-view-NASA-1-c.jpg",
-        "newsSite": "Teslarati",
-        "summary": "NASA cameras installed on the International Space Station happened to be in the right place and at the right time to capture...",
-        "publishedAt": "2023-01-22T21:52:34.000Z",
-        "updatedAt": "2023-01-22T21:52:40.115Z",
-        "featured": false,
-        "launches": [],
-        "events": []
-    }
+    const { id } = useParams();
+
+    const article = useAppSelector(selectArticleById(id));
+
+
+    if( !article ) return <ErrorPage />
 
     const onClick = () => {
         navigate(ROUTES.HOME);
@@ -46,6 +42,12 @@ function ArticlePage() {
                         sx={{ fontSize: "1.5rem", textAlign: "center", mb: 4}}
                     >
                         {article.title}
+                    </Typography>
+
+                    <Typography
+                        sx={{ mb: 2 }}
+                    >
+                        {article.summary}
                     </Typography>
 
                     <Typography sx={{ mb: 2}}>
