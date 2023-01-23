@@ -6,3 +6,5 @@ const selectFeature = (state: RootState) => state.articles;
 
 export const selectIsArticlesLoading = createSelector(selectFeature, (state) => state.isLoading);
 export const selectArticles = createSelector(selectFeature, (state) => state.articles);
+
+export const selectArticlesStart = createSelector(selectFeature, (state) => state.start);

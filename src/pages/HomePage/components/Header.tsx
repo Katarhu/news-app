@@ -3,7 +3,9 @@ import SearchBar from "./SearchBar";
 
 function Header() {
     return (
-        <Box>
+        <Box
+            id="anchor-header"
+        >
             <Typography
                 color="primary"
                 sx={{ fontWeight: 600, mb: 1 }}
