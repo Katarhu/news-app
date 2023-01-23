@@ -1,11 +1,13 @@
 import {Box, Typography} from "@mui/material";
 import SearchBar from "./SearchBar";
+import {ForwardedRef, forwardRef, RefObject} from "react";
 
-function Header() {
+interface HeaderProps {
+}
+
+function Header(props: HeaderProps, ref: ForwardedRef<any>) {
     return (
-        <Box
-            id="anchor-header"
-        >
+        <Box ref={ref} >
             <Typography
                 color="primary"
                 sx={{ fontWeight: 600, mb: 1 }}
@@ -18,4 +20,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default forwardRef(Header);

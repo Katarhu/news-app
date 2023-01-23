@@ -8,7 +8,7 @@ import {selectArticles, selectIsArticlesLoading} from "../../store/articles/arti
 import {IArticle} from "../../models/article";
 import IntersectionBox from "./components/IntersectorBox";
 import {environment} from "../../environment";
-import {useMemo} from "react";
+import {createRef, useMemo} from "react";
 import ScrollBack from "./components/ScrollBack";
 
 
@@ -16,6 +16,7 @@ function HomePage() {
 
     const isArticlesLoading = useAppSelector(selectIsArticlesLoading);
     const articles = useAppSelector(selectArticles);
+    const headerRef = createRef<HTMLElement>();
 
     const getLoadingSkeletons = (isLoading: boolean) => {
         if( !isLoading ) return;
@@ -33,6 +34,10 @@ function HomePage() {
         )
     }
 
+    const scrollIntoView = () => {
+        headerRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+
     const skeletonsWhileLoading = getLoadingSkeletons(isArticlesLoading);
     const articleItems = useMemo(() => getArticleItems(articles), [articles]);
     const articlesLength = articles.length;
@@ -42,7 +47,7 @@ function HomePage() {
             maxWidth="xl"
             sx={{ minHeight: "100%", py: 4, display: "flex", flexDirection: "column", gap: 4 }}
         >
-            <Header />
+            <Header ref={headerRef} />
 
             <Box
                 component="main"
@@ -56,7 +61,7 @@ function HomePage() {
 
                 <Divider />
 
-            <ScrollBack />
+
                 <Box
                     sx={{
                         display: "grid",
@@ -71,6 +76,7 @@ function HomePage() {
                 </Box>
             </Box>
 
+            <ScrollBack onClick={scrollIntoView}/>
 
             <IntersectionBox />
 

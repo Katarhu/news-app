@@ -18,7 +18,7 @@ export const getArticles = createAsyncThunk(
         try {
             const { data } = await axios.get<IArticle[]>(`articles?_start=${start}&_limit=${environment.ARTICLES_PER_FETCH}`);
 
-            await sleep(500);
+            await sleep(250);
 
             return data;
 

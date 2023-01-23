@@ -2,13 +2,11 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {Button} from "@mui/material";
 import {memo} from "react";
 
+interface ScrollBackProps {
+    onClick: () => void;
+}
 
-function ScrollBack() {
-
-    const onClick = () => {
-        window.location.href = "#anchor-header"
-    }
-
+function ScrollBack({ onClick }: ScrollBackProps) {
     return (
         <Button
             onClick={onClick}
