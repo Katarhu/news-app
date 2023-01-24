@@ -1,5 +1,7 @@
-import {Box, Button, Grid, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
+
+import {Box, Button, Grid, Typography} from "@mui/material";
+
 import ROUTES from "../../constants/routes";
 
 function ErrorPage() {

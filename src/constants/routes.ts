@@ -1,5 +1,4 @@
 
-
 export const ROUTES = {
     HOME: "/articles",
     ARTICLE: (id?: string | number) => id ? `/articles/${id}` : "/articles/:id",

@@ -1,7 +1,9 @@
 import {combineReducers} from "redux";
+
 import {configureStore} from "@reduxjs/toolkit";
 
 import articlesReducer from "./articles/articles.slice";
+
 
 const rootReducer = combineReducers({
     articles: articlesReducer

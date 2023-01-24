@@ -1,9 +1,13 @@
-import {Box, Button, Container, Paper, Typography} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
-import ROUTES from "../../constants/routes";
+
+import ErrorPage from "../ErrorPage/ErrorPage";
+
+import {Box, Button, Container, Paper, Typography} from "@mui/material";
+
 import {useAppSelector} from "../../hooks/redux";
 import {selectArticleById} from "../../store/articles/articles.selector";
-import ErrorPage from "../ErrorPage/ErrorPage";
+
+import ROUTES from "../../constants/routes";
 
 function ArticlePage() {
 

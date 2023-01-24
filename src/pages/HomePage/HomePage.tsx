@@ -1,22 +1,56 @@
-import {Box, Container, Divider, Grid, Typography} from "@mui/material";
+import {createRef, useEffect, useMemo} from "react";
 
-import ArticleSkeleton from "./components/ArticleSkeleton";
+import {Box, Container, Divider, Typography} from "@mui/material";
+
 import Header from "./components/Header";
+import ArticleSkeleton from "./components/ArticleSkeleton";
 import Article from "./components/Article";
-import {useAppSelector} from "../../hooks/redux";
-import {selectArticles, selectIsArticlesLoading} from "../../store/articles/articles.selector";
-import {IArticle} from "../../models/article";
 import IntersectionBox from "./components/IntersectorBox";
-import {environment} from "../../environment";
-import {createRef, useMemo} from "react";
 import ScrollBack from "./components/ScrollBack";
+
+import setArticlesPriority from "./utils/setArticlesPriority";
+import sortArticlesByPriority from "./utils/sortArticlesByPriority";
+
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {
+    selectArticleFilter,
+    selectArticles,
+    selectFilteredArticles,
+    selectIsArticlesLoading
+} from "../../store/articles/articles.selector";
+
+import {resetFilteredArticles, setFilteredArticles} from "../../store/articles/articles.slice";
+
+import {environment} from "../../environment";
+
+import {IArticle} from "../../models/article";
 
 
 function HomePage() {
 
     const isArticlesLoading = useAppSelector(selectIsArticlesLoading);
     const articles = useAppSelector(selectArticles);
+    const filteredArticles = useAppSelector(selectFilteredArticles);
     const headerRef = createRef<HTMLElement>();
+    const filter = useAppSelector(selectArticleFilter);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if( !filter ) {
+            dispatch(resetFilteredArticles());
+            return;
+        }
+        // const prioritizedArticles = setArticlesPriority(articles, filter);
+        //
+        // const filteredAndSortedArticles = sortArticlesByPriority(prioritizedArticles);
+        //
+        // dispatch(setFilteredArticles(filteredAndSortedArticles));
+
+        setArticlesPriority(articles, filter)
+            .then((prioritizedArticles) => sortArticlesByPriority(prioritizedArticles))
+            .then((filteredAndSortedArticles) => { dispatch(setFilteredArticles(filteredAndSortedArticles))});
+
+    }, [filter, articles]);
 
     const getLoadingSkeletons = (isLoading: boolean) => {
         if( !isLoading ) return;
@@ -39,8 +73,8 @@ function HomePage() {
     }
 
     const skeletonsWhileLoading = getLoadingSkeletons(isArticlesLoading);
-    const articleItems = useMemo(() => getArticleItems(articles), [articles]);
-    const articlesLength = articles.length;
+    const articleItems = useMemo(() => getArticleItems(filteredArticles), [filteredArticles]);
+    const articlesLength = filteredArticles.length;
 
     return (
         <Container

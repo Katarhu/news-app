@@ -1,8 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IArticle, IArticleState} from "../../models/article";
-import {getArticles} from "./articles.action.creators";
-import {environment} from "../../environment";
 
+import {getArticles} from "./articles.action.creators";
+
+import {IArticle, IArticleState} from "../../models/article";
+
+import {environment} from "../../environment";
 
 
 const initialState: IArticleState = {
@@ -10,13 +12,19 @@ const initialState: IArticleState = {
     isLoading: false,
     error: null,
     start: 0,
+    filter: "",
+    filteredArticles: []
 }
 
 export const articlesSlice = createSlice({
     name: "articles",
     initialState,
     reducers: {
-        increaseLimit: (state) => { state.start += environment.ARTICLES_PER_FETCH }
+        increaseArticlesFetchStart: (state, action: PayloadAction<number | undefined>) =>
+            { state.start += action.payload ?? environment.ARTICLES_PER_FETCH },
+        setArticlesFilter: (state, action: PayloadAction<string>) => { state.filter = action.payload },
+        setFilteredArticles: (state, action: PayloadAction<IArticle[]>) => { state.filteredArticles = action.payload },
+        resetFilteredArticles: (state) => { state.filteredArticles = [...state.articles] }
     },
     extraReducers: (builder) => {
         builder
@@ -36,4 +44,9 @@ export const articlesSlice = createSlice({
 
 
 export default articlesSlice.reducer;
-export const { increaseLimit } = articlesSlice.actions;
+export const {
+    increaseArticlesFetchStart,
+    setArticlesFilter,
+    setFilteredArticles,
+    resetFilteredArticles
+} = articlesSlice.actions;
