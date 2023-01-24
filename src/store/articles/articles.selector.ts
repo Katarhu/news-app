@@ -1,4 +1,5 @@
 import {RootState} from "../index";
+
 import {createSelector} from "@reduxjs/toolkit";
 
 
@@ -11,3 +12,6 @@ export const selectArticleById = (id?: string | number) =>
     createSelector(selectFeature, (state) => state.articles.find(article => article.id == id ));
 
 export const selectArticlesStart = createSelector(selectFeature, (state) => state.start);
+
+export const selectArticleFilter = createSelector(selectFeature, (state) => state.filter);
+export const selectFilteredArticles = createSelector(selectFeature, (state) => state.filteredArticles);

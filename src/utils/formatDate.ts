@@ -1,3 +1,5 @@
+
+
 export default function formatDate(date: string) {
     const stringToDate = new Date(date);
     const [day, _, year] = stringToDate.toLocaleDateString().split('.');

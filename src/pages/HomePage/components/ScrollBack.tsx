@@ -1,6 +1,9 @@
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {Button} from "@mui/material";
 import {memo} from "react";
+
+import {Button} from "@mui/material";
+
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
 
 interface ScrollBackProps {
     onClick: () => void;

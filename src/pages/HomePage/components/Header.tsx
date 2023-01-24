@@ -1,8 +1,11 @@
+import {ForwardedRef, forwardRef} from "react";
+
 import {Box, Typography} from "@mui/material";
+
 import SearchBar from "./SearchBar";
-import {ForwardedRef, forwardRef, RefObject} from "react";
 
 interface HeaderProps {
+
 }
 
 function Header(props: HeaderProps, ref: ForwardedRef<any>) {

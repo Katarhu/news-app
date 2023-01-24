@@ -1,22 +1,49 @@
-import {memo} from "react";
-import {Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography} from "@mui/material";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import {IArticle} from "../../../models/article";
 import {Link} from "react-router-dom";
-import ROUTES from "../../../constants/routes";
+import React, {memo} from "react";
+
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    Typography
+} from "@mui/material";
+
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+
+import {IArticle} from "../../../models/article";
+
+import isWordInString from "../../../utils/isWordInString";
+import sliceString from "../../../utils/sliceString";
 import formatDate from "../../../utils/formatDate";
 
-const MAX_TEXT_LENGTH = 100;
+import {useAppSelector} from "../../../hooks/redux";
+import {selectArticleFilter} from "../../../store/articles/articles.selector";
 
-function Article({ id, title, imageUrl, summary, publishedAt, updatedAt }: IArticle) {
+import {environment} from "../../../environment";
 
-    const sliceStringTo = (string: string, length: number) => {
-        if( string.length < length ) return string;
-        return string.slice(0, length) + "...";
+import ROUTES from "../../../constants/routes";
+
+
+function Article({ id, title, imageUrl, summary, publishedAt }: IArticle) {
+
+    const currentFilter = useAppSelector(selectArticleFilter);
+
+    const handleArticleTextFormat = (string: string, length: number) => {
+        const filterWithUniqueWords = [...new Set(currentFilter.toLowerCase().split(" "))].join(" ");
+
+        return sliceString(string, length).split(" ").map((word, index) => {
+            if ( !isWordInString(word, filterWithUniqueWords) ) return <React.Fragment key={index}> {word} </React.Fragment>;
+
+            return (
+                <Typography key={index} component="span" sx={{ background: "rgba(255, 246, 25, 0.63);", fontSize: "inherit", lineHeight: "inherit"}}>{word} </Typography>
+            )
+        });
     }
 
-    const slicedTitle = sliceStringTo(title, MAX_TEXT_LENGTH);
-    const slicedSummary = sliceStringTo(summary, MAX_TEXT_LENGTH);
+    const slicedTitle = handleArticleTextFormat(title, environment.MAX_ARTICLE_TEXT_LENGTH);
+    const slicedSummary = handleArticleTextFormat(summary, environment.MAX_ARTICLE_TEXT_LENGTH);
     const formattedDate = formatDate(publishedAt);
 
     return (
@@ -25,18 +52,17 @@ function Article({ id, title, imageUrl, summary, publishedAt, updatedAt }: IArti
             width: "100%",
             height: "100%",
             display: "grid",
-            gridTemplateRows: "200px auto auto",
+            gridTemplateRows: "200px 1fr auto",
         }}>
             <CardMedia
                 sx={{ height: 200 }}
                 image={imageUrl}
-                title={slicedTitle}
+                title={title}
             />
             <CardContent sx={{
                 display: "grid",
-                gridAutoFlow: "row",
                 gap: 1,
-                gridTemplateRows: "auto 1fr minmax(1.5rem, 4.5rem)",
+                gridTemplateRows: "auto 1fr 1fr",
             }}>
                 <Typography
                     color="primary"
@@ -50,9 +76,6 @@ function Article({ id, title, imageUrl, summary, publishedAt, updatedAt }: IArti
                     component="div"
                     sx={{
                         fontSize: "1.5rem",
-                        maxHeight: "5.25rem",
-                        lineHeight: "1.75rem",
-                        overflow: "hidden"
                     }}
                 >
                     {slicedTitle}
@@ -62,9 +85,7 @@ function Article({ id, title, imageUrl, summary, publishedAt, updatedAt }: IArti
                     color="text.secondary"
                     sx={{
                         fontSize: "1rem",
-                        lineHeight: "1.5rem",
-                        maxHeight: "4.5rem",
-                        overflow: "hidden"
+                        maxWidth: "100%",
                     }}
                 >
                     {slicedSummary}

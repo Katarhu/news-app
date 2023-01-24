@@ -5,6 +5,7 @@ export interface IArticle {
     summary: string;
     publishedAt: string;
     updatedAt: string;
+    priority?: number;
 }
 
 export interface IArticleState {
@@ -12,4 +13,6 @@ export interface IArticleState {
     error: string | null;
     isLoading: boolean;
     start: number;
+    filter: string;
+    filteredArticles: IArticle[];
 }
