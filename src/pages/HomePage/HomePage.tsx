@@ -40,11 +40,6 @@ function HomePage() {
             dispatch(resetFilteredArticles());
             return;
         }
-        // const prioritizedArticles = setArticlesPriority(articles, filter);
-        //
-        // const filteredAndSortedArticles = sortArticlesByPriority(prioritizedArticles);
-        //
-        // dispatch(setFilteredArticles(filteredAndSortedArticles));
 
         setArticlesPriority(articles, filter)
             .then((prioritizedArticles) => sortArticlesByPriority(prioritizedArticles))
