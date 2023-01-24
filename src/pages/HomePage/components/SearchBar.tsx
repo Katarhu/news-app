@@ -6,14 +6,22 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import useDebounceValue from "../../../hooks/useDebounceValue";
 
-import {useAppDispatch} from "../../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {setArticlesFilter} from "../../../store/articles/articles.slice";
+import useOnMount from "../../../hooks/useOnMount";
+import {selectArticleFilter} from "../../../store/articles/articles.selector";
 
 
 function SearchBar() {
     const [query, setQuery] = useState('');
     const debounceQuery = useDebounceValue(query);
     const dispatch = useAppDispatch();
+
+    const articlesFilter = useAppSelector(selectArticleFilter);
+
+    useOnMount(() => {
+        setQuery(articlesFilter);
+    })
 
     useEffect(() => {
         dispatch(setArticlesFilter(debounceQuery));
@@ -39,6 +47,7 @@ function SearchBar() {
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search by keywords"
                 inputProps={{ 'aria-label': 'search google maps' }}
+                value={query || ""}
             />
         </Paper>
     );
