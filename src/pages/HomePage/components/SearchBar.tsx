@@ -13,15 +13,16 @@ import {selectArticleFilter} from "../../../store/articles/articles.selector";
 
 
 function SearchBar() {
-    const [query, setQuery] = useState('');
+    const articlesFilter = useAppSelector(selectArticleFilter);
+
+    const [query, setQuery] = useState(articlesFilter);
     const debounceQuery = useDebounceValue(query);
     const dispatch = useAppDispatch();
 
-    const articlesFilter = useAppSelector(selectArticleFilter);
 
     useOnMount(() => {
         setQuery(articlesFilter);
-    })
+    });
 
     useEffect(() => {
         dispatch(setArticlesFilter(debounceQuery));

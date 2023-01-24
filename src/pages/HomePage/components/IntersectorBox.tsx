@@ -25,6 +25,7 @@ function IntersectionBox() {
     const start = useAppSelector(selectArticlesStart);
 
     useEffect(() => {
+        console.log(articlesFilter);
         if( !inView || !!articlesFilter || articlesError ) return;
         dispatch(increaseArticlesFetchStart());
         dispatch(getArticles({ start }));

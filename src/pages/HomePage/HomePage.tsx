@@ -101,7 +101,7 @@ function HomePage() {
                         padding: "2em 1em",
                     }}
                 >
-                    {articlesError?.toString()}
+                    {articlesError}
                     {articleItems}
                     {skeletonsWhileLoading}
                 </Box>

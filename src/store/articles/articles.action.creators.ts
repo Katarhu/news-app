@@ -25,8 +25,7 @@ export const getArticles = createAsyncThunk(
             return data;
 
         } catch (err: any) {
-            return err;
-            // return thunkApi.rejectWithValue("Could not fetch articles");
+            return thunkApi.rejectWithValue("Could not fetch articles");
         }
     }
 )
