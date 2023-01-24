@@ -14,7 +14,7 @@ import sortArticlesByPriority from "./utils/sortArticlesByPriority";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {
     selectArticleFilter,
-    selectArticles,
+    selectArticles, selectArticlesError,
     selectFilteredArticles,
     selectIsArticlesLoading
 } from "../../store/articles/articles.selector";
@@ -33,6 +33,7 @@ function HomePage() {
     const filteredArticles = useAppSelector(selectFilteredArticles);
     const headerRef = createRef<HTMLElement>();
     const filter = useAppSelector(selectArticleFilter);
+    const articlesError = useAppSelector(selectArticlesError);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -100,6 +101,7 @@ function HomePage() {
                         padding: "2em 1em",
                     }}
                 >
+                    {articlesError}
                     {articleItems}
                     {skeletonsWhileLoading}
                 </Box>

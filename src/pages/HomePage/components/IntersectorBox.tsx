@@ -5,7 +5,7 @@ import {Box} from "@mui/material";
 import {useInView} from "react-intersection-observer";
 
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {selectArticleFilter, selectArticlesStart} from "../../../store/articles/articles.selector";
+import {selectArticleFilter, selectArticlesError, selectArticlesStart} from "../../../store/articles/articles.selector";
 import {getArticles} from "../../../store/articles/articles.action.creators";
 
 import {increaseArticlesFetchStart} from "../../../store/articles/articles.slice";
@@ -14,6 +14,8 @@ import {increaseArticlesFetchStart} from "../../../store/articles/articles.slice
 function IntersectionBox() {
 
     const articlesFilter = useAppSelector(selectArticleFilter);
+    const articlesError = useAppSelector(selectArticlesError)
+
 
     const { ref, inView } = useInView({
 
@@ -23,10 +25,8 @@ function IntersectionBox() {
     const start = useAppSelector(selectArticlesStart);
 
     useEffect(() => {
-        if( !inView || !!articlesFilter ) return;
-        console.log(start);
+        if( !inView || !!articlesFilter || articlesError ) return;
         dispatch(increaseArticlesFetchStart());
-        console.log(start);
         dispatch(getArticles({ start }));
     }, [inView]);
 
