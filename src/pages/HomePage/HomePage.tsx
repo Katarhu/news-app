@@ -29,12 +29,15 @@ import {IArticle} from "../../models/article";
 function HomePage() {
 
     const isArticlesLoading = useAppSelector(selectIsArticlesLoading);
-    const articles = useAppSelector(selectArticles);
     const filteredArticles = useAppSelector(selectFilteredArticles);
-    const headerRef = createRef<HTMLElement>();
-    const filter = useAppSelector(selectArticleFilter);
     const articlesError = useAppSelector(selectArticlesError);
+    const filter = useAppSelector(selectArticleFilter);
+    const articles = useAppSelector(selectArticles);
+
+    const headerRef = createRef<HTMLElement>();
+
     const dispatch = useAppDispatch();
+
 
     useEffect(() => {
         if( !filter ) {
