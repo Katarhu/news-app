@@ -15,11 +15,11 @@ export default async function setArticlesPriority(articles: IArticle[], filter: 
     return articles.map((article) => {
         let priority = 0;
 
-        words.forEach((word) => {
-            const slicedTitle = sliceString(article.title, environment.MAX_ARTICLE_TEXT_LENGTH);
-            const slicedSummary = sliceString(article.summary, environment.MAX_ARTICLE_TEXT_LENGTH);
+        const slicedTitle = sliceString(article.title, environment.MAX_ARTICLE_TEXT_LENGTH);
+        const slicedSummary = sliceString(article.summary, environment.MAX_ARTICLE_TEXT_LENGTH);
 
-            if( isWordInString(word,slicedTitle )) priority += TITLE_FIND_WEIGHT;
+        words.forEach((word) => {
+            if( isWordInString(word, slicedTitle )) priority += TITLE_FIND_WEIGHT;
             if( isWordInString(word, slicedSummary )) priority += SUMMARY_FIND_WEIGHT;
         });
 

@@ -42,8 +42,8 @@ function Article({ id, title, imageUrl, summary, publishedAt }: IArticle) {
         });
     }
 
-    const slicedTitle = handleArticleTextFormat(title, environment.MAX_ARTICLE_TEXT_LENGTH);
-    const slicedSummary = handleArticleTextFormat(summary, environment.MAX_ARTICLE_TEXT_LENGTH);
+    const formattedTitle = handleArticleTextFormat(title, environment.MAX_ARTICLE_TEXT_LENGTH);
+    const formattedSummary = handleArticleTextFormat(summary, environment.MAX_ARTICLE_TEXT_LENGTH);
     const formattedDate = formatDate(publishedAt);
 
     return (
@@ -62,7 +62,7 @@ function Article({ id, title, imageUrl, summary, publishedAt }: IArticle) {
             <CardContent sx={{
                 display: "grid",
                 gap: 1,
-                gridTemplateRows: "auto 1fr 1fr",
+                gridTemplateRows: "auto 1fr minmax(1.5rem, 5.5rem)",
             }}>
                 <Typography
                     color="primary"
@@ -75,20 +75,21 @@ function Article({ id, title, imageUrl, summary, publishedAt }: IArticle) {
                     gutterBottom
                     component="div"
                     sx={{
-                        fontSize: "1.5rem",
+                        fontSize: { xs: "1.25rem", md: "1.5rem"},
                     }}
                 >
-                    {slicedTitle}
+                    {formattedTitle}
                 </Typography>
 
                 <Typography
                     color="text.secondary"
                     sx={{
                         fontSize: "1rem",
+                        lineHeight: "1.5rem",
                         maxWidth: "100%",
                     }}
                 >
-                    {slicedSummary}
+                    {formattedSummary}
                 </Typography>
 
             </CardContent>

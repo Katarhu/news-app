@@ -10,6 +10,11 @@ export default function useDebounceValue(value: any, debounceTime = DEBOUNCE_TIM
             setDebouncedValue(value);
         }, debounceTime)
 
+        if( value === "" ) {
+            clearTimeout(timeout);
+            setDebouncedValue("");
+        }
+
         return () => {
             clearTimeout(timeout);
         }

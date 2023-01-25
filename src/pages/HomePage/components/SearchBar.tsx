@@ -1,4 +1,4 @@
-import {ChangeEventHandler, useEffect, useState} from "react";
+import {ChangeEventHandler, memo, useEffect, useState} from "react";
 
 import {IconButton, InputBase, Paper} from "@mui/material";
 
@@ -15,7 +15,7 @@ import {selectArticleFilter} from "../../../store/articles/articles.selector";
 function SearchBar() {
     const articlesFilter = useAppSelector(selectArticleFilter);
 
-    const [query, setQuery] = useState(articlesFilter);
+    const [query, setQuery] = useState(() => articlesFilter);
     const debounceQuery = useDebounceValue(query);
     const dispatch = useAppDispatch();
 
@@ -26,7 +26,7 @@ function SearchBar() {
 
     useEffect(() => {
         dispatch(setArticlesFilter(debounceQuery));
-    }, [debounceQuery])
+    }, [debounceQuery]);
 
     const handleInputChange: ChangeEventHandler = (event) => {
         setQuery((event.target as HTMLInputElement).value);
@@ -54,4 +54,4 @@ function SearchBar() {
     );
 }
 
-export default SearchBar;
+export default memo(SearchBar);
