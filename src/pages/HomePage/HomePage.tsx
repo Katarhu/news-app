@@ -63,7 +63,7 @@ function HomePage() {
         if( !articles.length ) return;
 
         return articles.map((article) =>
-            <Article key={article.id + new Date().getTime() * Math.random() * 1000} {...article} />
+            <Article key={article.id} {...article} />
         )
     }
 
