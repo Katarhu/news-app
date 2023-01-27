@@ -26,9 +26,9 @@ import {environment} from "../../../environment";
 import ROUTES from "../../../constants/routes";
 
 
-function Article({ id, title, imageUrl, summary, publishedAt }: IArticle) {
+function Article({ id, title, imageUrl, summary, publishedAt, currentFilter }: IArticle & {currentFilter: string}) {
 
-    const currentFilter = useAppSelector(selectArticleFilter);
+    // const currentFilter = useAppSelector(selectArticleFilter);
 
     const handleArticleTextFormat = (string: string, length: number) => {
         const filterWithUniqueWords = [...new Set(currentFilter.toLowerCase().split(" "))].join(" ");

@@ -1,4 +1,4 @@
-import {createRef, useEffect, useMemo} from "react";
+import {createRef, useEffect, useMemo, useState, useTransition} from "react";
 
 import {Box, Container, Divider, Typography} from "@mui/material";
 
@@ -11,15 +11,13 @@ import ScrollBack from "./components/ScrollBack";
 import setArticlesPriority from "./utils/setArticlesPriority";
 import sortArticlesByPriority from "./utils/sortArticlesByPriority";
 
-import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {useAppSelector} from "../../hooks/redux";
 import {
     selectArticleFilter,
     selectArticles, selectArticlesError,
-    selectFilteredArticles,
     selectIsArticlesLoading
 } from "../../store/articles/articles.selector";
 
-import {resetFilteredArticles, setFilteredArticles} from "../../store/articles/articles.slice";
 
 import {environment} from "../../environment";
 
@@ -29,25 +27,29 @@ import {IArticle} from "../../models/article";
 function HomePage() {
 
     const isArticlesLoading = useAppSelector(selectIsArticlesLoading);
-    const filteredArticles = useAppSelector(selectFilteredArticles);
     const articlesError = useAppSelector(selectArticlesError);
-    const filter = useAppSelector(selectArticleFilter);
+    // const filter = useAppSelector(selectArticleFilter);
     const articles = useAppSelector(selectArticles);
 
     const headerRef = createRef<HTMLElement>();
 
-    const dispatch = useAppDispatch();
+    const [filter, setFilter] = useState('');
 
+    const [_, startTransition] = useTransition();
+
+    const [filteredArticles, setFilteredArticles] = useState(articles);
 
     useEffect(() => {
         if( !filter ) {
-            dispatch(resetFilteredArticles());
+            setFilteredArticles(articles);
             return;
         }
 
         setArticlesPriority(articles, filter)
             .then((prioritizedArticles) => sortArticlesByPriority(prioritizedArticles))
-            .then((filteredAndSortedArticles) => { dispatch(setFilteredArticles(filteredAndSortedArticles))});
+            .then((filteredAndSortedArticles) => {
+                setFilteredArticles(filteredAndSortedArticles);
+            });
 
     }, [filter, articles]);
 
@@ -63,12 +65,18 @@ function HomePage() {
         if( !articles.length ) return;
 
         return articles.map((article) =>
-            <Article key={article.id} {...article} />
+            <Article key={article.id} {...article} currentFilter={filter} />
         )
     }
 
     const scrollIntoView = () => {
         headerRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    const handleSearchQueryChange = (query: string) => {
+        startTransition(() => {
+            setFilter(query);
+        });
     }
 
     const skeletonsWhileLoading = getLoadingSkeletons(isArticlesLoading);
@@ -80,7 +88,7 @@ function HomePage() {
             maxWidth="xl"
             sx={{ minHeight: "100%", py: 4, display: "flex", flexDirection: "column", gap: 4 }}
         >
-            <Header ref={headerRef} />
+            <Header onSearch={handleSearchQueryChange} ref={headerRef} />
 
             <Box
                 component="main"
@@ -93,7 +101,6 @@ function HomePage() {
                 </Typography>
 
                 <Divider />
-
 
                 <Box
                     sx={{

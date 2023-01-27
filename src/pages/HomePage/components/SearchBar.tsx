@@ -11,21 +11,25 @@ import {setArticlesFilter} from "../../../store/articles/articles.slice";
 import useOnMount from "../../../hooks/useOnMount";
 import {selectArticleFilter} from "../../../store/articles/articles.selector";
 
+interface SearchBarProps {
+    onSearch: (query: string) => void;
+}
 
-function SearchBar() {
+function SearchBar({ onSearch }: SearchBarProps) {
     const articlesFilter = useAppSelector(selectArticleFilter);
 
     const [query, setQuery] = useState(() => articlesFilter);
     const debounceQuery = useDebounceValue(query);
-    const dispatch = useAppDispatch();
 
+    const dispatch = useAppDispatch();
 
     useOnMount(() => {
         setQuery(articlesFilter);
     });
 
     useEffect(() => {
-        dispatch(setArticlesFilter(debounceQuery));
+        // dispatch(setArticlesFilter(debounceQuery));
+        onSearch(debounceQuery);
     }, [debounceQuery]);
 
     const handleInputChange: ChangeEventHandler = (event) => {

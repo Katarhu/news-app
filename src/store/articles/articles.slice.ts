@@ -13,7 +13,6 @@ const initialState: IArticleState = {
     error: null,
     start: 0,
     filter: "",
-    filteredArticles: []
 }
 
 export const articlesSlice = createSlice({
@@ -23,8 +22,6 @@ export const articlesSlice = createSlice({
         increaseArticlesFetchStart: (state, action: PayloadAction<number | undefined>) =>
             { state.start += action.payload ?? environment.ARTICLES_PER_FETCH },
         setArticlesFilter: (state, action: PayloadAction<string>) => { state.filter = action.payload },
-        setFilteredArticles: (state, action: PayloadAction<IArticle[]>) => { state.filteredArticles = action.payload },
-        resetFilteredArticles: (state) => { state.filteredArticles = [...state.articles] }
     },
     extraReducers: (builder) => {
         builder
@@ -47,6 +44,4 @@ export default articlesSlice.reducer;
 export const {
     increaseArticlesFetchStart,
     setArticlesFilter,
-    setFilteredArticles,
-    resetFilteredArticles
 } = articlesSlice.actions;

@@ -14,5 +14,4 @@ export interface IArticleState {
     isLoading: boolean;
     start: number;
     filter: string;
-    filteredArticles: IArticle[];
 }

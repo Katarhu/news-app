@@ -5,10 +5,10 @@ import {Box, Typography} from "@mui/material";
 import SearchBar from "./SearchBar";
 
 interface HeaderProps {
-
+    onSearch: (query: string) => void;
 }
 
-function Header(props: HeaderProps, ref: ForwardedRef<any>) {
+function Header({ onSearch }: HeaderProps, ref: ForwardedRef<any>) {
     return (
         <Box ref={ref} >
             <Typography
@@ -18,7 +18,7 @@ function Header(props: HeaderProps, ref: ForwardedRef<any>) {
                 Filter by keywords
             </Typography>
 
-            <SearchBar />
+            <SearchBar onSearch={onSearch} />
         </Box>
     );
 }
